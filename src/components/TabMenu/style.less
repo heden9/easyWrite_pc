@@ -1,0 +1,63 @@
+@import url("../../assets/less/color");
+@tab-width: 164px;
+.tabMenu-container{
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  font-size: 13px;
+  padding: 13px 15px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .tab-item{
+    display: block;
+    cursor: pointer;
+    transition: all .1s;
+    padding: 3px 5px;
+    width: @tab-width;
+    border-radius: 13px;
+    margin: 10px 0;
+    background: @bg-grey;
+    color: @font-color;
+    text-indent: 5px;
+    text-align: left;
+    >i{
+      width: 18px;
+      margin-right: 5px;
+    }
+    &.active{
+      background: @normal-blue;
+      color: white;
+    }
+  }
+  .submenu{
+    width: @tab-width;
+    font-size: .8em;
+    text-align: left;
+    li{
+      cursor: pointer;
+      margin: 6px 0;
+      height: 20px;
+      &:hover a{
+        color: @normal-blue;
+      }
+    }
+    a{
+      display: block;
+      line-height: 20px;
+      padding-left: 34px;
+      width: 100%;
+      height: 100%;
+      color: @normal-grey;
+      .ant-badge{
+        transform: scale(.7) translateY(-10%);
+      }
+      &.router-active{
+        color: @normal-blue;
+      }
+    }
+  }
+}
+
+

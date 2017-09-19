@@ -1,0 +1,68 @@
+@import url("../../assets/less/color");
+.nav-container{
+  width: 100%;
+  min-width: 1184px;
+  height: 50px;
+  color: white;
+  background-color: @normal-blue;
+  position: relative;
+  z-index: 0;
+
+  a{
+    color: white;
+  }
+  >.wrapper{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 5px;
+  }
+  &::after{
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: @deep-blue url('../../assets/images/nav.png') no-repeat 0 0 /contain;
+    right: 0;
+    height: 100%;
+    top: 0;
+    width: 30%;
+
+  }
+  .btn-group{
+    align-self: flex-end;
+    margin-right: 20px;
+    width: 220px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    a{
+      opacity: .8;
+      font-size: 12px;
+      &:hover{
+        opacity: 1;
+      }
+      i{
+        margin-right: 3px;
+      }
+    }
+  }
+  .notify-bar{
+    margin-left: 12px;
+    >span{
+      margin-left: 10px;
+    }
+    .message{
+      margin-left: 40px;
+      >a{
+        opacity: .9;
+        font-size: .8em;
+        margin-left: 5px;
+        text-decoration: underline;
+        &:hover{
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

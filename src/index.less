@@ -1,0 +1,84 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+ul,li,ol{
+  list-style: none;
+}
+html, body, :global(#root) {
+  height: 100%;
+  background: #f7fafc;
+  span{
+    font-size: 12px;
+  }
+
+  a:focus{
+    text-decoration: none;
+  }
+}
+.wrapper{
+  width: 1184px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+
+.animated {
+  animation-duration: .4s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+
+@keyframes zoomInDown {
+  from {
+    opacity: 0;
+    transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+
+.zoomInDown {
+  animation-name: zoomInDown;
+}
+
+
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.slideInDown {
+  animation-name: slideInDown;
+}
+
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeInDown {
+  animation-name: fadeInDown;
+}
