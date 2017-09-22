@@ -24,13 +24,7 @@ class Login extends React.PureComponent {
         this.setState({
           isLogin: true
         });
-        setTimeout(()=>{
-          this.setState({
-            isLogin: false
-          });
-          message.success('登录成功 :)');
-          this.props.dispatch(routerRedux.push('/home'));
-        },800);
+        this.props.dispatch({type: 'user/Login', payload: { ...values }});
       }
     });
   };
@@ -54,12 +48,6 @@ class Login extends React.PureComponent {
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(
-              <Checkbox>记住密码</Checkbox>
-            )}
             <Button loading={this.state.isLogin} type="primary" htmlType="submit" className="login-form-button">
               登录
             </Button>
@@ -74,7 +62,6 @@ const LoginForm = Form.create()(Login);
 
 function mapStateToProps() {
   return {
-
   }
 }
 

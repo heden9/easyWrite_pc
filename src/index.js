@@ -12,6 +12,8 @@ app.model(require("./models/user"));
 
 app.model(require("./models/route"));
 
+app.model(require("./models/tableData"));
+
 // 2. Plugins
 app.use(createLoading());
 

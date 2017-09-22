@@ -93,8 +93,8 @@ class Home extends React.PureComponent{
     const columns = [{
       title: '文件名称',
       dataIndex: 'file_name',
-      render: data => (
-        <Link>{data}</Link>
+      render: (data, record) => (
+        <Link to={`write/${record.id}`}>{data}</Link>
       )
     }, {
       title: '填写时间',

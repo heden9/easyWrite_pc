@@ -1,4 +1,5 @@
-
+import { loginHandle } from '../services';
+import { message } from 'antd';
 export default {
 
   namespace: 'user',
@@ -17,7 +18,16 @@ export default {
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {  // eslint-disable-line
+    *Login({ payload }, { call, put }) {  // eslint-disable-line
+      const { data: { code , data, message} } = yield call(loginHandle, { ...payload });
+      if(code !== 0){
+        message.error(message);
+        return;
+      }
+      message.success('登录成功：)');
+      if(data.url){
+        location.href = data.url;
+      }
       yield put({ type: 'save' });
     },
   },

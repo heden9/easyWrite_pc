@@ -4,6 +4,7 @@ import Home from './routes/Home';
 import File from './routes/File';
 import App from './routes/app';
 import Login from './routes/Login';
+import WritePage from './routes/WritePage';
 import NotFound from './routes/NotFound';
 
 function RouterConfig({ history }) {
@@ -13,6 +14,7 @@ function RouterConfig({ history }) {
         <IndexRoute component={Login}/>
         <Route path="home" component={Home}/>
         <Route path="file/:id" component={File}/>
+        <Route path="write/:id" component={WritePage}/>
         <Route path="*" component={NotFound}/>
       </Route>
     </Router>
