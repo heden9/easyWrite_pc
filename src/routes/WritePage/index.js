@@ -1,10 +1,14 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { connect } from 'dva';
 import { message, Input, Icon, Modal, Form, Spin, Button } from 'antd';
 import './style.less';
 
 const FormItem = Form.Item;
-const opeC = [{ title: '操作', dataIndex: 'ope' }];
+const opeC = [{ title: '操作', dataIndex: 'ope', width: 70 }];
+const userAgent = navigator.userAgent;
+const isAndroid = userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1; //android终端
+const isiOS = !!userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 class WritePage extends React.PureComponent {
   state = {
     columns: [],
@@ -12,9 +16,8 @@ class WritePage extends React.PureComponent {
     modalVisible: false,
     modalData: null,
   };
-
   componentWillMount() {
-    this.props.dispatch({ type: 'tableData/fetch', payload: { id: this.props.routeParams.id } });
+    this.props.dispatch({type: 'tableData/fetch', payload: { id: this.props.id }})
   }
 
   componentWillReceiveProps({ data }) {
@@ -26,9 +29,6 @@ class WritePage extends React.PureComponent {
       dataSource: data.dataSource,
     });
   }
-  componentDidMount() {
-  }
-
   _editModal = (item) => {
     this.setState({
       modalData: item,
@@ -55,22 +55,42 @@ class WritePage extends React.PureComponent {
       }),
     }, () => {
       message.success('修改成功！');
+      this.props.dispatch({type: 'tableData/save', payload: {
+        [this.props.id]: {
+          status: this.props.data.status,
+          fileName: this.props.data.fileName,
+          version: this.props.data.version,
+          dataSource: this.state.dataSource,
+          columns: this.state.columns
+        }
+      }})
     });
   };
   render() {
-    const { loading, data } = this.props;
-    const newColumns = this.state.columns.concat(opeC);
-    const newDataSource = this.state.dataSource.map((item, index) => ({
-      ...item,
-      ope: <a onClick={this._editModal.bind(null, item)}><Icon type="edit" />修改</a>,
-    }));
-    return (
-      <div className="table-container">
-        <Button type="primary" className="submit-button" icon={'check-circle-o'} loading={loading}>
-          提交
-        </Button>
-        {
-          this.state.modalData &&
+    const {loading, data} = this.props;
+    if (data) {
+      const newColumns = data.status === 0 ? this.state.columns.concat(opeC) : this.state.columns;
+      const newDataSource = this.state.dataSource.map((item, index) => ({
+        ...item,
+        ope: <a onClick={this._editModal.bind(null, item)}><Icon type="edit" />修改</a>,
+      }));
+      return (
+        <div className="table-container">
+          <Helmet>
+            <title>{data.fileName}</title>
+            {
+              isAndroid &&
+              <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0"/>
+            }
+          </Helmet>
+          {
+            data.status === 0 &&
+            <Button type="primary" className="submit-button" loading={loading}>
+              提交
+            </Button>
+          }
+          {
+            this.state.modalData &&
             <NewModalForm
               key={`modal${this.state.modalData.index}`}
               columns={this.state.columns}
@@ -79,23 +99,22 @@ class WritePage extends React.PureComponent {
               modalData={this.state.modalData}
               modalVisible={this.state.modalVisible}
             />
-        }
-        {
-          data ? <table
+          }
+          <table
             className="table-body"
             style={{ width: this.state.columns.length * 70 + 100 }}
           >
             <tbody>
-              <tr>
-                {
+            <tr>
+              {
                 newColumns.map((item) => {
                   return (
                     <th key={item.title} style={{ width: item.width }}>{item.title}</th>
                   );
                 })
               }
-              </tr>
-              {
+            </tr>
+            {
               newDataSource.map((trItem, index) => {
                 return (
                   <tr key={`tr${index}`} className="row-section">
@@ -111,10 +130,14 @@ class WritePage extends React.PureComponent {
               })
             }
             </tbody>
-          </table> : <Spin size={'large'} />
-        }
-      </div>
-    );
+          </table>
+        </div>
+      );
+    }else{
+      return (
+        <Spin size={'large'}/>
+      )
+    }
   }
 }
 
@@ -163,10 +186,11 @@ function ModalForm(props) {
   );
 }
 const NewModalForm = Form.create()(ModalForm);
-function mapStateToProps({ loading: { models: { tableData } }, tableData: data }, { routeParams }) {
+function mapStateToProps({ loading: { models: { tableData } }, tableData: data }, { match: { params } }) {
   return {
     loading: tableData,
-    data: data[routeParams.id],
+    data: data[params.id],
+    id: params.id
   };
 }
 

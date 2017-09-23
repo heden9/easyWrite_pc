@@ -1,5 +1,6 @@
+import { routerRedux } from 'dva/router';
 import { loginHandle } from '../services';
-
+import { message } from 'antd';
 export default {
 
   namespace: 'user',
@@ -19,8 +20,8 @@ export default {
 
   effects: {
     *Login({ payload }, { call, put }) {  // eslint-disable-line
-      const { data: { code, data, message } } = yield call(loginHandle, { ...payload });
-      if (code !== 0) {
+      const { data, code, message } = yield call(loginHandle, { ...payload });
+      if(code !== 0){
         message.error(message);
         return;
       }
@@ -28,7 +29,10 @@ export default {
       if (data.url) {
         location.href = data.url;
       }
-      yield put({ type: 'save' });
+      if (data.username){
+        yield put(routerRedux.push('/home'));
+        yield put({ type: 'save' ,payload: { username: data.username}});
+      }
     },
   },
 

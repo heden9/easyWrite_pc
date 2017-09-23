@@ -1,7 +1,16 @@
 
 export default {
-  'GET /Home/Confirm': require('./mock/file.json'),
-  'POST /PC/index.php/ShowFileInfo/tableData': require('./mock/fileDetail.json'),
+  'GET /Home/Confirm': {
+    code: 0,
+    message: "",
+    data: require('./mock/file.json')
+  },
+  'POST /PC/index.php/ShowFileInfo/tableData': {
+    code: 0,
+    message: "",
+    data: require('./mock/fileDetail.json')
+
+  },
   'POST /PC/index.php/ShowFileController/checkFileContent': {
     code: 0,
     message: "",
@@ -13,7 +22,7 @@ export default {
     code: 0,
     message: "",
     data: {
-      url: "http://mgq.jblog.info/"
+      username: '谷田'
     }
   },
 };

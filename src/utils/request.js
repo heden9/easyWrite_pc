@@ -1,5 +1,5 @@
 import fetch from 'dva/fetch';
-
+import { message } from 'antd';
 function parseJSON(response) {
   return response.json();
 }
@@ -28,7 +28,7 @@ export default async function request(url, options) {
 
   const data = await response.json();
   const ret = {
-    data,
+      ...data,
     headers: {},
   };
 

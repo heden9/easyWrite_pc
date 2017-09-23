@@ -18,27 +18,34 @@ class Home extends React.PureComponent {
     filtered: false,
     downloading: false,
   };
+  componentWillMount(){
+    this.initDataSource(this.props);
+  }
   componentWillReceiveProps(nextProps) {
     if (this.props.version === nextProps.version) {
       return;
     }
+    this.initDataSource(nextProps)
+  }
+  initDataSource = (dataSource) => {
     let data = [];
-    switch (this.props.params.id) {
+    const { id } = this.props.match.params;
+    switch (id) {
       case '1':
-        data = [...nextProps.unwrite.data]; break;
+        data = [...dataSource.unwrite.data]; break;
       case '2':
-        data = [...nextProps.unconfirm.data]; break;
+        data = [...dataSource.unconfirm.data]; break;
       case '3':
-        data = [...nextProps.unchecked.data]; break;
+        data = [...dataSource.unchecked.data]; break;
       case '4':
-        data = [...nextProps.finished.data]; break;
+        data = [...dataSource.finished.data]; break;
     }
     this.dataSource = data;
     this.setState({
       data,
     });
     message.success('数据已更新 :)');
-  }
+  };
   onInputChange = (e) => {
     this.setState({ searchText: e.target.value });
   };
@@ -95,7 +102,7 @@ class Home extends React.PureComponent {
       title: '文件名称',
       dataIndex: 'file_name',
       render: (data, record) => (
-        <Link to={`write/${record.id}`}>{data}</Link>
+        <Link to={`/write/${record.id}`}>{data}</Link>
       ),
     }, {
       title: '填写时间',
@@ -110,13 +117,13 @@ class Home extends React.PureComponent {
       title: '状态',
       dataIndex: 'status',
       render: data => (
-        <span className={`status${this.props.params.id}`}>{data}</span>
+        <span className={`status${this.props.match.params.id}`}>{data}</span>
       ),
     }, {
       title: '操作',
       dataIndex: 'operation',
-      render: data => (
-        <Link>{data}</Link>
+      render: (data, record) => (
+        <Link to={`/write/${record.id}`}>{data}</Link>
       ),
     }];
     const { loading } = this.props;

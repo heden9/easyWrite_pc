@@ -10,7 +10,7 @@ export async function loginHandle({ userName, password }) {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
-    body: `userName=${userName}&password=${password}`,
+    body: JSON.stringify({ userName, password}),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -24,7 +24,22 @@ export async function fetchTableData({ id }) {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
-    body: `id=${id}`,
+    body: JSON.stringify({ id }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  });
+}
+
+
+
+export async function submitHandle({ id }) {
+  return request('/PC/index.php/ShowFileController/checkFileContent', {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'include',
+    body: JSON.stringify({id}),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',

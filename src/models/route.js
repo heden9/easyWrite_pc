@@ -9,15 +9,6 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname }) => {
-        // if(pathname === '/'){
-        //   dispatch({type: 'hide', payload: { hideTop: true, hideLeft: true }})
-        // }else{
-        //   dispatch({type: 'hide', payload: { hideTop: false, hideLeft: false }})
-        // }
-      });
-    },
   },
 
   effects: {

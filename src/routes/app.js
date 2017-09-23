@@ -1,30 +1,49 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
+import NProgress from 'nprogress';
+import Loader from '../components/Loader';
 import Navigation from '../components/Navigation';
 import TabMenu from '../components/TabMenu';
+import { withRouter } from 'dva/router'
 import './app.less';
-
-function App({ children, notify, location: { pathname }, hideLeft, hideTop }) {
+let lastHref;
+function App({ children, notify, loading, location: { pathname }, hideLeft, hideTop }) {
+  const href = window.location.href;
   const notifyInfo = {
     unwrite_n: parseInt(notify.unwrite.num),
     unconfirm_n: parseInt(notify.unconfirm.num),
     finished_n: parseInt(notify.finished.num),
   };
-  return (
-    <div id="app-container">
-      <Navigation hide={hideTop} />
-      {
-        pathname.indexOf('/write/') !== -1 ? <div className="wrapper">{children}</div> :
-        <div className="app-content">
-          <TabMenu {...notifyInfo} pathname={pathname} hide={hideLeft} />
-          <div className="app-main-body">
-            <Crumbs pathname={pathname} />
-            {children}
-          </div>
-        </div>
-      }
-    </div>
-  );
+  if (lastHref !== href) {
+    NProgress.start();
+    if (!loading.global) {
+      NProgress.done();
+      lastHref = href
+    }
+  }
+  if(pathname === '/'){
+    return (
+      <div>{children}</div>
+    )
+  }else{
+    return (
+      <div id="app-container">
+        <Loader fullScreen spinning={false} />
+        <Navigation hide={hideTop}/>
+        {
+          pathname.indexOf('/write/') !== -1 ? <div className="wrapper">{children}</div> :
+            <div className="app-content">
+              <TabMenu {...notifyInfo}  pathname={pathname} hide={hideLeft} />
+              <div className="app-main-body">
+                <Crumbs pathname={pathname} />
+                {children}
+              </div>
+            </div>
+        }
+      </div>
+    );
+  }
+
 }
 
 const ROUTE = {
@@ -56,11 +75,12 @@ function Crumbs({ pathname }) {
 Crumbs.propTypes = {
   pathname: PropTypes.string,
 };
-function mapStateToProps({ notify, route: { hideLeft, hideTop } }) {
+function mapStateToProps({ notify, route: { hideLeft, hideTop }, loading }) {
   return {
     notify,
     hideLeft,
     hideTop,
+    loading
   };
 }
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

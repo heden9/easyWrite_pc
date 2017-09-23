@@ -1,4 +1,7 @@
 {
+  "fileName": "教师信息统计表",
+  "version": "123456",
+  "status": 0,
   "columns":[
     {"title":"\u5e8f\u53f7","dataIndex":"index"},
 

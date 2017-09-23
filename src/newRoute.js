@@ -11,23 +11,14 @@ function RouterConfig({ history, app }) {
   });
   const Login = dynamic({
     app,
-    models: () => [
-      import('./models/user'),
-    ],
     component: () => import('./routes/Login'),
   });
   const WritePage = dynamic({
     app,
-    models: () => [
-      import('./models/tableData'),
-    ],
     component: () => import('./routes/WritePage'),
   });
   const File = dynamic({
     app,
-    models: () => [
-      import('./models/notify'),
-    ],
     component: () => import('./routes/File'),
   });
   const NotFound = dynamic({

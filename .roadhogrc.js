@@ -24,5 +24,15 @@ export default {
         "dva-hmr"
       ]
     }
+  },
+  xdllPlugin: {
+    exclude: [
+      "babel-runtime"
+    ],
+    include: [
+      "dva/router",
+      "dva/saga",
+      "dva/fetch"
+    ]
   }
 };
