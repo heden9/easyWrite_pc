@@ -1,4 +1,5 @@
 import { fetchInfo } from '../services';
+
 export default {
 
   namespace: 'notify',
@@ -9,42 +10,42 @@ export default {
       num: 0,
       data: [
 
-      ]
+      ],
     },
     unconfirm: {
       num: 0,
       data: [
 
-      ]
+      ],
     },
     unchecked: {
       num: 0,
       data: [
 
-      ]
+      ],
     },
     finished: {
       num: 0,
       data: [
 
-      ]
-    }
+      ],
+    },
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname }) => {
-        if(/\/file\/[1-4]/.test(pathname)){
-          dispatch({type: 'fetch'});
+        if (/\/file\/[1-4]/.test(pathname)) {
+          dispatch({ type: 'fetch' });
         }
-      })
-    }
+      });
+    },
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
-      const { data: {unwrite, unconfirm, unchecked, finished} } = yield call(fetchInfo);
-      yield put({ type: 'save' , payload: { unwrite, unconfirm, finished, unchecked, version: new Date().getTime() } });
+      const { data: { unwrite, unconfirm, unchecked, finished } } = yield call(fetchInfo);
+      yield put({ type: 'save', payload: { unwrite, unconfirm, finished, unchecked, version: new Date().getTime() } });
     },
   },
 

@@ -6,7 +6,6 @@ ul,li,ol{
   list-style: none;
 }
 html, body, :global(#root) {
-  height: 100%;
   background: #f7fafc;
   span{
     font-size: 12px;
@@ -22,7 +21,47 @@ html, body, :global(#root) {
   height: 100%;
 }
 
+@media  (orientation : portrait) and (max-width: 500px) {
+  :global(#root) {
+    .nav-container{
+      display: none;
+    }
+    .wrapper{
+      width: 100%;
+    }
+    .table-container{
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      background: white;
+      bottom: 0;
+      height: 100%;
+    }
+    #app-container {
+      .app-content{
+        width: 100%;
+      }
+      .table-wrap{
+        width: 100%;
+      }
+    }
 
+    .submit-button{
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 20px;
+      width: 250px;
+      background: rgba(16, 142, 233, 0.56);
+      border-color: rgba(16, 142, 233, 0.53);
+      height: 40px;
+      >span{
+        font-size: 18px;
+        font-weight: 300;
+      }
+    }
+  }
+}
 .animated {
   animation-duration: .4s;
   animation-fill-mode: both;

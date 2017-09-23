@@ -1,8 +1,9 @@
 import React from 'react';
-import { Router, Switch, Route, routerRedux } from 'dva/router';
+import { Switch, Route, routerRedux } from 'dva/router';
 import App from './routes/app';
 import dynamic from 'dva/dynamic';
-const { ConnectedRouter } = routerRedux
+
+const { ConnectedRouter } = routerRedux;
 function RouterConfig({ history, app }) {
   const Home = dynamic({
     app,
@@ -37,7 +38,7 @@ function RouterConfig({ history, app }) {
     <ConnectedRouter history={history}>
       <App>
         <Switch>
-          <Route exact path="/" component={Login}/>
+          <Route exact path="/" component={Login} />
           <Route exact path="/Home" component={Home} />
           <Route exact path="/file/:id" component={File} />
           <Route exact path="/write/:id" component={WritePage} />

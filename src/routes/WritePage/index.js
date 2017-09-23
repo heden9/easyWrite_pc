@@ -1,112 +1,173 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table } from 'antd';
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-  width: 100,
-  fixed: 'left',
-  filters: [{
-    text: 'Joe',
-    value: 'Joe',
-  }, {
-    text: 'John',
-    value: 'John',
-  }],
-  onFilter: (value, record) => record.name.indexOf(value) === 0,
-}, {
-  title: 'Other',
-  children: [{
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-    width: 200,
-    sorter: (a, b) => a.age - b.age,
-  }, {
-    title: 'Address',
-    children: [{
-      title: 'Street',
-      dataIndex: 'street',
-      key: 'street',
-      width: 200,
-    }, {
-      title: 'Block',
-      children: [{
-        title: 'Building',
-        dataIndex: 'building',
-        key: 'building',
-        width: 100,
-      }, {
-        title: 'Door No.',
-        dataIndex: 'number',
-        key: 'number',
-        width: 100,
-      }],
-    }],
-  }],
-}, {
-  title: 'Company',
-  children: [{
-    title: 'Company Address',
-    dataIndex: 'companyAddress',
-    key: 'companyAddress',
-  }, {
-    title: 'Company Name',
-    dataIndex: 'companyName',
-    key: 'companyName',
-  }],
-}, {
-  title: 'Gender',
-  dataIndex: 'gender',
-  key: 'gender',
-  width: 60,
-  fixed: 'right',
-}];
+import { message, Input, Icon, Modal, Form, Spin, Button } from 'antd';
+import './style.less';
 
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    name: 'John Brown',
-    age: i + 1,
-    street: 'Lake Park',
-    building: 'C',
-    number: 2035,
-    companyAddress: 'Lake Street 42',
-    companyName: 'SoftLake Co',
-    gender: 'M',
-  });
-}
-class WritePage extends React.PureComponent{
-  componentWillMount(){
-    this.props.dispatch({ type: 'route/hide', payload: { hideLeft: true }});
+const FormItem = Form.Item;
+const opeC = [{ title: '操作', dataIndex: 'ope' }];
+class WritePage extends React.PureComponent {
+  state = {
+    columns: [],
+    dataSource: [],
+    modalVisible: false,
+    modalData: null,
+  };
+
+  componentWillMount() {
+    this.props.dispatch({ type: 'tableData/fetch', payload: { id: this.props.routeParams.id } });
   }
-  componentWillUnmount(){
-    this.props.dispatch({ type: 'route/hide', payload: { hideLeft: false }});
+
+  componentWillReceiveProps({ data }) {
+    if (data == null) {
+      return;
+    }
+    this.setState({
+      columns: data.columns.map(item => ({ ...item, width: 70 })),
+      dataSource: data.dataSource,
+    });
   }
-  componentDidMount(){
-    this.props.dispatch({type: 'tableData/fetch', payload: { id: this.props.routeParams.id}})
+  componentDidMount() {
   }
-  render(){
-    const { loading } = this.props;
+
+  _editModal = (item) => {
+    this.setState({
+      modalData: item,
+      modalVisible: true,
+    });
+  };
+  _toggleModal = (modalVisible) => {
+    this.setState({
+      modalVisible,
+    });
+  };
+  _submitHandle = (values) => {
+    this.setState({
+      modalVisible: false,
+      dataSource: this.state.dataSource.map((item) => {
+        if (item.index === this.state.modalData.index) {
+          return {
+            ...item,
+            ...values,
+          };
+        } else {
+          return item;
+        }
+      }),
+    }, () => {
+      message.success('修改成功！');
+    });
+  };
+  render() {
+    const { loading, data } = this.props;
+    const newColumns = this.state.columns.concat(opeC);
+    const newDataSource = this.state.dataSource.map((item, index) => ({
+      ...item,
+      ope: <a onClick={this._editModal.bind(null, item)}><Icon type="edit" />修改</a>,
+    }));
     return (
-      <Table
-        loading={loading}
-        columns={columns}
-        dataSource={data}
-        bordered
-        pagination={false}
-        size="middle"
-        scroll={{ x: '130%', y: 240 }}
-      />
-    )
+      <div className="table-container">
+        <Button type="primary" className="submit-button" icon={'check-circle-o'} loading={loading}>
+          提交
+        </Button>
+        {
+          this.state.modalData &&
+            <NewModalForm
+              key={`modal${this.state.modalData.index}`}
+              columns={this.state.columns}
+              _submitHandle={this._submitHandle}
+              _toggleModal={this._toggleModal}
+              modalData={this.state.modalData}
+              modalVisible={this.state.modalVisible}
+            />
+        }
+        {
+          data ? <table
+            className="table-body"
+            style={{ width: this.state.columns.length * 70 + 100 }}
+          >
+            <tbody>
+              <tr>
+                {
+                newColumns.map((item) => {
+                  return (
+                    <th key={item.title} style={{ width: item.width }}>{item.title}</th>
+                  );
+                })
+              }
+              </tr>
+              {
+              newDataSource.map((trItem, index) => {
+                return (
+                  <tr key={`tr${index}`} className="row-section">
+                    {
+                      newColumns.map((tdItem, index) => {
+                        return (
+                          <td key={tdItem.dataIndex + index}>{trItem[tdItem.dataIndex]}</td>
+                        );
+                      })
+                    }
+                  </tr>
+                );
+              })
+            }
+            </tbody>
+          </table> : <Spin size={'large'} />
+        }
+      </div>
+    );
   }
 }
-function mapStateToProps({ loading: { models: { tableData }}}) {
+
+
+function ModalForm(props) {
+  const { modalData, columns, modalVisible, _toggleModal, _submitHandle } = props;
+  const { getFieldDecorator } = props.form;
+  const submitHandle = () => {
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        _submitHandle && _submitHandle(values);
+      }
+    });
+  };
+  return (
+    <Modal
+      maskClosable={false}
+      title={`修改第${modalData.index}行数据`}
+      wrapClassName="vertical-center-modal"
+      visible={modalVisible}
+      onOk={submitHandle}
+      onCancel={_toggleModal.bind(null, false)}
+    >
+      <Form>
+        {
+          columns.map((item) => {
+            if (item.dataIndex !== 'index') {
+              return (
+                <FormItem
+                  key={item.title}
+                  label={item.title}
+                >
+                  {getFieldDecorator(item.dataIndex, {
+                    initialValue: modalData[item.dataIndex],
+                  })(
+                    <Input />,
+                  )}
+                </FormItem>
+              );
+            }
+          })
+        }
+      </Form>
+    </Modal>
+  );
+}
+const NewModalForm = Form.create()(ModalForm);
+function mapStateToProps({ loading: { models: { tableData } }, tableData: data }, { routeParams }) {
   return {
-    loading: tableData
-  }
+    loading: tableData,
+    data: data[routeParams.id],
+  };
 }
 
 export default connect(mapStateToProps)(WritePage);

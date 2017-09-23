@@ -2,17 +2,16 @@ import dva from 'dva';
 import './utils/format';
 import './index.less';
 import createLoading from 'dva-loading';
-
 // 1. Initialize
 const app = dva();
 
-app.model(require("./models/notify"));
+app.model(require('./models/notify'));
 
-app.model(require("./models/user"));
+app.model(require('./models/user'));
 
-app.model(require("./models/route"));
+app.model(require('./models/route'));
 
-app.model(require("./models/tableData"));
+app.model(require('./models/tableData'));
 
 // 2. Plugins
 app.use(createLoading());
@@ -24,3 +23,4 @@ app.router(require('./router'));
 
 // 5. Start
 app.start('#root');
+

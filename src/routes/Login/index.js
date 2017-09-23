@@ -1,20 +1,20 @@
 import React from 'react';
 import LoginBack from '../../components/LoginBack';
 import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
 import './style.less';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
+
 const FormItem = Form.Item;
 
 class Login extends React.PureComponent {
   state = {
-    isLogin: false
+    isLogin: false,
   };
-  componentDidMount(){
-    this.props.dispatch({type: 'route/hide', payload: { hideTop: true, hideLeft: true }})
+  componentDidMount() {
+    this.props.dispatch({ type: 'route/hide', payload: { hideTop: true, hideLeft: true } });
   }
-  componentWillUnmount(){
-    this.props.dispatch({type: 'route/hide', payload: { hideTop: false, hideLeft: false }})
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'route/hide', payload: { hideTop: false, hideLeft: false } });
   }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -22,14 +22,15 @@ class Login extends React.PureComponent {
       if (!err) {
         console.log('Received values of form: ', values);
         this.setState({
-          isLogin: true
+          isLogin: true,
         });
-        this.props.dispatch({type: 'user/Login', payload: { ...values }});
+        this.props.dispatch({ type: 'user/Login', payload: { ...values } });
       }
     });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
+    const size = 'large';
     return (
       <LoginBack className="login-container">
         <Form onSubmit={this.handleSubmit} className="login-form">
@@ -37,14 +38,14 @@ class Login extends React.PureComponent {
             {getFieldDecorator('userName', {
               rules: [{ required: true, message: '请输入您的账号！' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+              <Input prefix={<Icon type="user" size={size} style={{ fontSize: 13 }} />} placeholder="账号" />,
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
               rules: [{ required: true, message: '请输入您的密码！' }],
             })(
-              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+              <Input prefix={<Icon type="lock" size={size} style={{ fontSize: 13 }} />} type="password" placeholder="密码" />,
             )}
           </FormItem>
           <FormItem>
@@ -62,7 +63,7 @@ const LoginForm = Form.create()(Login);
 
 function mapStateToProps() {
   return {
-  }
+  };
 }
 
 

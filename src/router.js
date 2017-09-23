@@ -11,11 +11,11 @@ function RouterConfig({ history }) {
   return (
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRoute component={Login}/>
-        <Route path="home" component={Home}/>
-        <Route path="file/:id" component={File}/>
-        <Route path="write/:id" component={WritePage}/>
-        <Route path="*" component={NotFound}/>
+        <IndexRoute component={Login} />
+        <Route path="home" component={Home} />
+        <Route path="file/:id" component={File} />
+        <Route path="write/:id" component={WritePage} />
+        <Route path="*" component={NotFound} />
       </Route>
     </Router>
   );

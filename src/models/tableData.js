@@ -1,4 +1,5 @@
 import { fetchTableData } from '../services';
+
 export default {
   namespace: 'tableData',
   state: {
@@ -17,7 +18,7 @@ export default {
   effects: {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
       const { data } = yield call(fetchTableData, { ...payload });
-      yield put({ type: 'save' , payload: { [payload.id]: data }});
+      yield put({ type: 'save', payload: { [payload.id]: data } });
     },
   },
 

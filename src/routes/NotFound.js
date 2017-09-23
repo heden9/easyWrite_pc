@@ -4,19 +4,19 @@ import { connect } from 'dva';
 function mapStateToProps() {
   return {
 
-  }
+  };
 }
-class NotFound extends React.PureComponent{
-  componentWillUnmount(){
-    this.props.dispatch({ type: 'route/hide', payload: { hideLeft: false }});
+class NotFound extends React.PureComponent {
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'route/hide', payload: { hideLeft: false } });
   }
-  componentDidMount(){
-    this.props.dispatch({ type: 'route/hide', payload: { hideLeft: true }});
+  componentDidMount() {
+    this.props.dispatch({ type: 'route/hide', payload: { hideLeft: true } });
   }
-  render(){
+  render() {
     return (
       <div>404 NOT FOUND</div>
-    )
+    );
   }
 }
 
