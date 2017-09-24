@@ -34,12 +34,12 @@ export async function fetchTableData({ id }) {
 
 
 
-export async function submitHandle({ id }) {
+export async function submitHandle(data) {
   return request('/PC/index.php/ShowFileController/checkFileContent', {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
-    body: JSON.stringify({id}),
+    body: JSON.stringify({...data}),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',

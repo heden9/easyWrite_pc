@@ -23,7 +23,7 @@ export default {
       }
       const resource = yield select(state => state['tableData'][payload.id]);
       if(!resource){
-        message.success('本地数据丢失，已重新拉取！');
+        message.success('已拉取最新数据！');
         yield put({ type: 'save', payload: { [payload.id]: data } });
         return;
       }
@@ -33,8 +33,13 @@ export default {
       }
     },
     *submit({ payload }, { call, put }) {  // eslint-disable-line
-      const { data } = yield call(submitHandle, { ...payload });
-      if(!data){
+      const { data, code, message } = yield call(submitHandle, { ...payload });
+      if(code === 1){
+        message.error(message);
+        return;
+      }else if(code === 2){
+        message.error('请重新登录！');
+        yield put(routerRedux.push('/'));
         return;
       }
       message.success('提交成功！');

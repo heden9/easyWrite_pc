@@ -17,6 +17,7 @@
     "less-vars-to-js": "^1.2.0",
     "nprogress": "^0.2.0",
     "particles.js": "^2.0.0",
+    "path-to-regexp": "^2.0.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-helmet": "^5.2.0"

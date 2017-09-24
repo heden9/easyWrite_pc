@@ -1,5 +1,4 @@
 import { fetchInfo } from '../services';
-import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 export default {
 
@@ -36,7 +35,6 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       history.listen(({ pathname }) => {
-        console.log('notify',pathname);
         if (/\/file\/[1-4]/.test(pathname) || /\/home/.test(pathname)) {
           dispatch({ type: 'fetch' });
         }
@@ -63,7 +61,7 @@ export default {
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
-    },
+    }
   },
 
 };

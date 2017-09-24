@@ -4,6 +4,7 @@ import NProgress from 'nprogress';
 import Loader from '../components/Loader';
 import Navigation from '../components/Navigation';
 import TabMenu from '../components/TabMenu';
+import pathToRegexp from 'path-to-regexp';
 import { withRouter } from 'dva/router'
 import './app.less';
 let lastHref;
@@ -56,17 +57,18 @@ const ROUTE = {
   },
 };
 function Crumbs({ pathname }) {
-  const temp = pathname.split('/').filter(item => (
-    item !== '' && item
-  ));
+  const match = pathToRegexp('/:file/:fileId([1-4])').exec(pathname);
+  if(!match){
+    return <div/>
+  }
   if (pathname === '/home') { return <div className="crumbs">首页</div>; }
-  if (ROUTE[temp[0]] == null) {
-    return null;
+  if (!ROUTE[match[1]] || !ROUTE[match[1]][match[2]]) {
+    return <div/>;
   } else {
     return (
       <div className="crumbs">
         {
-          `${ROUTE[temp[0]].host} - ${ROUTE[temp[0]][temp[1]]}`
+          `${ROUTE[match[1]].host} - ${ROUTE[match[1]][match[2]]}`
         }
       </div>
     );

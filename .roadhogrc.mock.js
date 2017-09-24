@@ -11,12 +11,14 @@ export default {
     data: require('./mock/fileDetail.json')
 
   },
-  'POST /PC/index.php/ShowFileController/checkFileContent': {
-    code: 0,
-    message: "",
-    data: {
-      url: "http://mgq.jblog.info/"
-    }
+  'POST /PC/index.php/ShowFileController/checkFileContent': (req, res) =>{
+    res.send({
+      code: 1,
+      message: "错误",
+      data: {
+        url: "http://mgq.jblog.info/"
+      }
+    })
   },
   'POST /PC/index.php/User': {
     code: 0,

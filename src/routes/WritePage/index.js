@@ -66,6 +66,14 @@ class WritePage extends React.PureComponent {
       }})
     });
   };
+  _postHandle = () => {
+    this.props.dispatch({ type: 'tableData/submit', payload: {
+      id: this.props.id,
+      fileName: this.props.data.fileName,
+      dataSource: this.state.dataSource,
+      columns: this.state.columns
+    }});
+  };
   render() {
     const {loading, data} = this.props;
     if (data) {
@@ -85,7 +93,7 @@ class WritePage extends React.PureComponent {
           </Helmet>
           {
             data.status === 0 &&
-            <Button type="primary" className="submit-button" loading={loading}>
+            <Button type="primary" onClick={this._postHandle} className="submit-button" loading={loading}>
               提交
             </Button>
           }

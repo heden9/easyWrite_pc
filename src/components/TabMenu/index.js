@@ -16,7 +16,7 @@ export default function TabMenu({ unwrite_n, unconfirm_n, pathname, hide }) {
         <Icon type="home" />
           首页
       </NavLink>
-      <Link className={/file\/[0-9]/.test(pathname) ? 'tab-item active' : 'tab-item'} to="file/1">
+      <Link className={/file\/[1-4]/.test(pathname) ? 'tab-item active' : 'tab-item'} to="/file/1">
         <Icon type="file-text" />
           文件管理
         </Link>

@@ -31,7 +31,7 @@ function RouterConfig({ history, app }) {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/Home" component={Home} />
-          <Route exact path="/file/:id" component={File} />
+          <Route exact path="/file/:id([1-4])" component={File} />
           <Route exact path="/write/:id" component={WritePage} />
           <Route component={NotFound} />
         </Switch>
