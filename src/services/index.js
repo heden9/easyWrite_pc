@@ -1,12 +1,12 @@
 import request from '../utils/request';
 
 export async function fetchInfo() {
-  return request('/Home/Confirm');
+  return request('/index.php/PC/Confirm');
 }
 
 
 export async function loginHandle({ userName, password }) {
-  return request('/PC/index.php/User', {
+  return request('/index.php/PC/User', {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
@@ -20,7 +20,7 @@ export async function loginHandle({ userName, password }) {
 
 
 export async function fetchTableData({ id }) {
-  return request('/PC/index.php/ShowFileInfo/tableData', {
+  return request('/index.php/PC/ShowFileInfo/tableData', {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
@@ -35,7 +35,7 @@ export async function fetchTableData({ id }) {
 
 
 export async function submitHandle(data) {
-  return request('/PC/index.php/ShowFileController/checkFileContent', {
+  return request('/index.php/PC/ShowFileController/checkFileContent', {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',

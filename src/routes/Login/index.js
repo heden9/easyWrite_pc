@@ -7,9 +7,6 @@ import { Form, Icon, Input, Button } from 'antd';
 const FormItem = Form.Item;
 
 class Login extends React.PureComponent {
-  state = {
-    isLogin: false,
-  };
   componentDidMount() {
     this.props.dispatch({ type: 'route/hide', payload: { hideTop: true, hideLeft: true } });
   }
@@ -21,9 +18,6 @@ class Login extends React.PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.setState({
-          isLogin: true,
-        });
         this.props.dispatch({ type: 'user/Login', payload: { ...values } });
       }
     });
@@ -49,7 +43,7 @@ class Login extends React.PureComponent {
             )}
           </FormItem>
           <FormItem>
-            <Button loading={this.state.isLogin} type="primary" htmlType="submit" className="login-form-button">
+            <Button loading={this.props.loading} type="primary" htmlType="submit" className="login-form-button">
               登录
             </Button>
           </FormItem>
@@ -61,8 +55,9 @@ class Login extends React.PureComponent {
 
 const LoginForm = Form.create()(Login);
 
-function mapStateToProps() {
+function mapStateToProps({ loading: { models: { user }}}) {
   return {
+    loading: user
   };
 }
 
