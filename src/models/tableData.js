@@ -1,4 +1,4 @@
-import { fetchTableData, submitHandle } from '../services';
+import { fetchTableData2, submitHandle } from '../services';
 import { routerRedux } from 'dva/router';
 import { message, Modal } from 'antd';
 const confirm = Modal.confirm;
@@ -12,7 +12,7 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put, select }) {  // eslint-disable-line
-      const { data, code, message } = yield call(fetchTableData, { ...payload });
+      const { data, code, message } = yield call(fetchTableData2, { ...payload });
       if(code === 1){
         message.error(message);
         return;
@@ -28,11 +28,23 @@ export default {
         return;
       }
       if(data.version !== resource.version){
-        if(yield call(showConfirm))
+        if(yield call(showConfirm, {
+            title: '是否拉取最新数据?',
+            content: '远端数据已更新，点击确认放弃本地草稿',
+          }))
           yield put({ type: 'save', payload: { [payload.id]: data } });
       }
     },
     *submit({ payload }, { call, put }) {  // eslint-disable-line
+      if (yield call(showConfirm, {
+          title: '是否保存数据到数据库?',
+          content: '点击确定保存，取消不保存',
+        })) {
+
+        payload.editCode = 1;
+      }else {
+        payload.editCode = 0;
+      }
       const { data, code, message } = yield call(submitHandle, { ...payload });
       if(code === 1){
         message.error(message);
@@ -59,11 +71,10 @@ export default {
 };
 
 
-async function showConfirm() {
-  return await new Promise((resolve, reject)=>{
+function showConfirm(props) {
+  return new Promise((resolve, reject)=>{
     confirm({
-      title: '是否拉取最新数据?',
-      content: '远端数据已更新，点击确认放弃本地草稿',
+      ...props,
       onOk() {
         resolve(true);
       },
@@ -73,3 +84,4 @@ async function showConfirm() {
     });
   })
 }
+

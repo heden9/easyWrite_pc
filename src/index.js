@@ -3,7 +3,6 @@ import localStore from './utils/localStore';
 import './utils/format';
 import './index.less';
 import createLoading from 'dva-loading';
-import 'babel-polyfill';
 import { message } from 'antd';
 // 1. Initialize
 let initialState = {};

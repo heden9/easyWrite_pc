@@ -39,5 +39,4 @@ function RouterConfig({ history, app }) {
     </ConnectedRouter>
   );
 }
-
 export default RouterConfig;

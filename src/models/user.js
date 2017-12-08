@@ -1,6 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { loginHandle } from '../services';
 import { message } from 'antd';
+
 export default {
 
   namespace: 'user',
@@ -21,17 +22,15 @@ export default {
   effects: {
     *Login({ payload }, { call, put }) {  // eslint-disable-line
       const { data, code, message } = yield call(loginHandle, { ...payload });
-      if(code !== 0){
+      if (code === 1) {
         message.error(message);
         return;
-      }
-      message.success('登录成功：)');
-      if (data.url) {
+      } else if (code === 3) {
         location.href = data.url;
-      }
-      if (data.username){
+      } else if (code === 0) {
         yield put(routerRedux.push('/home'));
-        yield put({ type: 'save' ,payload: { username: data.username}});
+        yield put({ type: 'save', payload: { username: data.username } });
+        message.success('登录成功：)');
       }
     },
   },

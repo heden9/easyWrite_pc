@@ -1,8 +1,5 @@
-import fetch from 'dva/fetch';
+import axios from 'axios';
 import { message } from 'antd';
-function parseJSON(response) {
-  return response.json();
-}
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -18,23 +15,21 @@ function checkStatus(response) {
  * Requests a URL, returning a promise.
  *
  * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
+ * @param  {object} [options] The options we want to pass to "axios"
  * @return {object}           An object containing either "data" or "err"
  */
 export default async function request(url, options) {
-  const response = await fetch(url, options);
-
+  const response = await axios(url, options);
+  console.log('v 2.0.0');
   checkStatus(response);
-
-  const data = await response.json();
+  const { data, code } = response;
+  if (code === 2) {
+    location.href = '/';
+  }
   const ret = {
-      ...data,
+    ...data,
     headers: {},
   };
-
-  if (response.headers.get('x-total-count')) {
-    ret.headers['x-total-count'] = response.headers.get('x-total-count');
-  }
 
   return ret;
 }

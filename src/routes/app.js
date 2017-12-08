@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import NProgress from 'nprogress';
 import Loader from '../components/Loader';
 import Navigation from '../components/Navigation';
@@ -8,7 +9,7 @@ import pathToRegexp from 'path-to-regexp';
 import { withRouter } from 'dva/router'
 import './app.less';
 let lastHref;
-function App({ children, notify, loading, location: { pathname }, hideLeft, hideTop }) {
+function App({ dispatch, children, notify, loading, location: { pathname }, hideLeft, hideTop }) {
   const href = window.location.href;
   const notifyInfo = {
     unwrite_n: parseInt(notify.unwrite.num),

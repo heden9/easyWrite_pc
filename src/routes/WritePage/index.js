@@ -7,8 +7,8 @@ import './style.less';
 const FormItem = Form.Item;
 const opeC = [{ title: '操作', dataIndex: 'ope', width: 70 }];
 const userAgent = navigator.userAgent;
-const isAndroid = userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1; //android终端
-const isiOS = !!userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+const isAndroid = userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1; // android终端
+const isiOS = !!userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
 class WritePage extends React.PureComponent {
   state = {
     columns: [],
@@ -17,7 +17,7 @@ class WritePage extends React.PureComponent {
     modalData: null,
   };
   componentWillMount() {
-    this.props.dispatch({type: 'tableData/fetch', payload: { id: this.props.id }})
+    this.props.dispatch({ type: 'tableData/fetch', payload: { id: this.props.id } });
   }
 
   componentWillReceiveProps({ data }) {
@@ -55,30 +55,32 @@ class WritePage extends React.PureComponent {
       }),
     }, () => {
       message.success('修改成功！');
-      this.props.dispatch({type: 'tableData/save', payload: {
-        [this.props.id]: {
-          status: this.props.data.status,
-          fileName: this.props.data.fileName,
-          version: this.props.data.version,
-          dataSource: this.state.dataSource,
-          columns: this.state.columns
-        }
-      }})
+      this.props.dispatch({ type: 'tableData/save',
+        payload: {
+          [this.props.id]: {
+            status: this.props.data.status,
+            fileName: this.props.data.fileName,
+            version: this.props.data.version,
+            dataSource: this.state.dataSource,
+            columns: this.state.columns,
+          },
+        } });
     });
   };
   _postHandle = () => {
-    this.props.dispatch({ type: 'tableData/submit', payload: {
-      id: this.props.id,
-      fileName: this.props.data.fileName,
-      dataSource: this.state.dataSource,
-      columns: this.state.columns
-    }});
+    this.props.dispatch({ type: 'tableData/submit',
+      payload: {
+        id: this.props.id,
+        fileName: this.props.data.fileName,
+        dataSource: this.state.dataSource,
+        columns: this.state.columns,
+      } });
   };
   render() {
-    const {loading, data} = this.props;
+    const { loading, data } = this.props;
     if (data) {
       const newColumns = data.status === 0 ? this.state.columns.concat(opeC) : this.state.columns;
-      const newDataSource = this.state.dataSource.map((item, index) => ({
+      const newDataSource = this.state.dataSource.map((item) => ({
         ...item,
         ope: <a onClick={this._editModal.bind(null, item)}><Icon type="edit" />修改</a>,
       }));
@@ -88,7 +90,7 @@ class WritePage extends React.PureComponent {
             <title>{data.fileName}</title>
             {
               isAndroid &&
-              <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0"/>
+              <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0" />
             }
           </Helmet>
           {
@@ -113,16 +115,16 @@ class WritePage extends React.PureComponent {
             style={{ width: this.state.columns.length * 70 + 100 }}
           >
             <tbody>
-            <tr>
-              {
+              <tr>
+                {
                 newColumns.map((item) => {
                   return (
                     <th key={item.title} style={{ width: item.width }}>{item.title}</th>
                   );
                 })
               }
-            </tr>
-            {
+              </tr>
+              {
               newDataSource.map((trItem, index) => {
                 return (
                   <tr key={`tr${index}`} className="row-section">
@@ -141,10 +143,10 @@ class WritePage extends React.PureComponent {
           </table>
         </div>
       );
-    }else{
+    } else {
       return (
-        <Spin size={'large'}/>
-      )
+        <Spin size={'large'} />
+      );
     }
   }
 }
@@ -194,11 +196,12 @@ function ModalForm(props) {
   );
 }
 const NewModalForm = Form.create()(ModalForm);
+
 function mapStateToProps({ loading: { models: { tableData } }, tableData: data }, { match: { params } }) {
   return {
     loading: tableData,
     data: data[params.id],
-    id: params.id
+    id: params.id,
   };
 }
 

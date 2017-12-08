@@ -9,7 +9,13 @@ export default {
       "Android >= 4"
     ]
   } ,
-  proxy : { } ,
+  proxy : {
+    "/": {
+      "target": "http://mgq.jblog.info",
+      "changeOrigin": true,
+      "pathRewrite": { "^/" : "" }
+    }
+  } ,
   // style 必须是 true
   extraBabelPlugins : [
     "transform-runtime" ,

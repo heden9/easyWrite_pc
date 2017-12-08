@@ -8,9 +8,8 @@ export async function fetchInfo() {
 export async function loginHandle({ userName, password }) {
   return request('/index.php/PC/User', {
     method: 'POST',
-    mode: 'cors',
-    credentials: 'include',
-    body: JSON.stringify({ userName, password}),
+    withCredentials: true,
+    data: JSON.stringify({ userName, password }),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,9 +21,8 @@ export async function loginHandle({ userName, password }) {
 export async function fetchTableData({ id }) {
   return request('/index.php/PC/ShowFileInfo/tableData', {
     method: 'POST',
-    mode: 'cors',
-    credentials: 'include',
-    body: JSON.stringify({ id }),
+    withCredentials: true,
+    data: JSON.stringify({ id }),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -32,17 +30,26 @@ export async function fetchTableData({ id }) {
   });
 }
 
-
-
-export async function submitHandle(data) {
-  return request('/index.php/PC/ShowFileController/checkFileContent', {
+export async function fetchTableData2({ id }) {
+  return request('/index.php/PC/Confirm/fileLoad', {
     method: 'POST',
-    mode: 'cors',
-    credentials: 'include',
-    body: JSON.stringify({...data}),
+    withCredentials: true,
+    data: JSON.stringify({ filename: id }),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  });
+}
+
+export async function submitHandle(data) {
+  return request('/index.php/PC/ShowFileInfo/checkFileContent', {
+    method: 'POST',
+    withCredentials: true,
+    data: JSON.stringify({ ...data }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
     },
   });
 }
