@@ -37,13 +37,13 @@ export async function fetchTableData2({ id }) {
     data: JSON.stringify({ filename: id }),
     headers: {
       Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
     },
   });
 }
 
 export async function submitHandle(data) {
-  return request('/index.php/PC/ShowFileInfo/checkFileContent', {
+  return request('/index.php/PC/Confirm/contentCheck', {
     method: 'POST',
     withCredentials: true,
     data: JSON.stringify({ ...data }),
@@ -53,3 +53,27 @@ export async function submitHandle(data) {
     },
   });
 }
+
+export async function modifyPassword({ oldPassword, newPassword  }) {
+  return request('/index.php/PC/Confirm/setPasswd', {
+    method: 'POST',
+    withCredentials: true,
+    data: JSON.stringify({oldPassword, newPassword }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export async function refresh() {
+  return request('/index.php/PC/Confirm/refresh', {
+    method: 'GET',
+    withCredentials: true,
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+    },
+  });
+}
+

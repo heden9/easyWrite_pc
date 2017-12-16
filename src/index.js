@@ -3,6 +3,7 @@ import localStore from './utils/localStore';
 import './utils/format';
 import './index.less';
 import createLoading from 'dva-loading';
+import './utils/common';
 import { message } from 'antd';
 // 1. Initialize
 let initialState = {};
@@ -26,6 +27,7 @@ window.beforeunload = window.onunload = function () {
 app.model(require('./models/notify'));
 //
 app.model(require('./models/user'));
+app.model(require('./models/file'));
 
 app.model(require('./models/route'));
 
@@ -40,3 +42,4 @@ app.router(require('./newRoute'));
 // 5. Start
 app.start('#root');
 
+window.console.log = () => {};

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Link } from 'dva/router';
 import { Icon } from 'antd';
 import './style.less';
@@ -15,11 +15,11 @@ export default function Navigation({ hide }) {
             <Icon type="solution" />
             人员管理
           </Link>
-          <Link to="/">
+          <Link to="/modify">
             <Icon type="unlock" />
             修改密码
           </Link>
-          <Link to="/">
+          <Link to="/login">
             <Icon type="poweroff" />
             退出系统
           </Link>
@@ -30,13 +30,10 @@ export default function Navigation({ hide }) {
           <span>{`星期${'日一二三四五六'.charAt(new Date().getDay())}`}</span>
           <span className="message">
             <Icon type="pushpin" style={{ color: 'white' }} />
-            <Link to="/12">{'您有四份文件待处理,请尽快处理。'}</Link>
+            <Link to="/home">{'欢迎使用易填表😯~'}</Link>
           </span>
         </div>
       </div>
     </div>
   );
 }
-Navigation.propTypes = {
-  hide: PropTypes.bool,
-};

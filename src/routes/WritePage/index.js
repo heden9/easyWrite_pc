@@ -1,4 +1,5 @@
 import React from 'react';
+import { routerRedux } from 'dva/router';
 import { Helmet } from 'react-helmet';
 import { connect } from 'dva';
 import { message, Input, Icon, Modal, Form, Spin, Button } from 'antd';
@@ -58,7 +59,7 @@ class WritePage extends React.PureComponent {
       this.props.dispatch({ type: 'tableData/save',
         payload: {
           [this.props.id]: {
-            status: this.props.data.status,
+            status: this.props.status,
             fileName: this.props.data.fileName,
             version: this.props.data.version,
             dataSource: this.state.dataSource,
@@ -71,15 +72,19 @@ class WritePage extends React.PureComponent {
     this.props.dispatch({ type: 'tableData/submit',
       payload: {
         id: this.props.id,
-        fileName: this.props.data.fileName,
+        filename: this.props.data.fileName,
         dataSource: this.state.dataSource,
         columns: this.state.columns,
       } });
   };
+  _downloadHandle = () => {
+    this.props.dispatch({ type: 'file/delete', payload: { fileName: this.props.id } })
+  };
   render() {
     const { loading, data } = this.props;
     if (data) {
-      const newColumns = data.status === 0 ? this.state.columns.concat(opeC) : this.state.columns;
+      const { status = 0 } = data;
+      const newColumns = status === 0 ? this.state.columns.concat(opeC) : this.state.columns;
       const newDataSource = this.state.dataSource.map((item) => ({
         ...item,
         ope: <a onClick={this._editModal.bind(null, item)}><Icon type="edit" />修改</a>,
@@ -94,9 +99,22 @@ class WritePage extends React.PureComponent {
             }
           </Helmet>
           {
-            data.status === 0 &&
+            status === 0 &&
             <Button type="primary" onClick={this._postHandle} className="submit-button" loading={loading}>
               提交
+            </Button>
+          }
+          {
+            status === 0 &&
+            <Button
+              download={this.props.id}
+              type="primary"
+              onClick={this._downloadHandle}
+              href={`/index.php/PC/Download?file_name=${this.props.id}`}
+              className="download-button"
+              loading={loading}
+            >
+              下载
             </Button>
           }
           {
@@ -163,6 +181,7 @@ function ModalForm(props) {
       }
     });
   };
+  console.log(modalData);
   return (
     <Modal
       maskClosable={false}
@@ -197,7 +216,7 @@ function ModalForm(props) {
 }
 const NewModalForm = Form.create()(ModalForm);
 
-function mapStateToProps({ loading: { models: { tableData } }, tableData: data }, { match: { params } }) {
+function mapStateToProps({ loading: { models: { tableData } }, tableData: data }, { computedMatch: { params } }) {
   return {
     loading: tableData,
     data: data[params.id],

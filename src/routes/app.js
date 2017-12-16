@@ -1,6 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
 import NProgress from 'nprogress';
 import Loader from '../components/Loader';
 import Navigation from '../components/Navigation';
@@ -75,9 +74,6 @@ function Crumbs({ pathname }) {
     );
   }
 }
-Crumbs.propTypes = {
-  pathname: PropTypes.string,
-};
 function mapStateToProps({ notify, route: { hideLeft, hideTop }, loading }) {
   return {
     notify,

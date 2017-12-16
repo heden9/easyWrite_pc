@@ -9,6 +9,7 @@ const FormItem = Form.Item;
 class Login extends React.PureComponent {
   componentDidMount() {
     this.props.dispatch({ type: 'route/hide', payload: { hideTop: true, hideLeft: true } });
+    window.common.writeCookie('USERID', '');
   }
   componentWillUnmount() {
     this.props.dispatch({ type: 'route/hide', payload: { hideTop: false, hideLeft: false } });
@@ -27,6 +28,7 @@ class Login extends React.PureComponent {
     const size = 'large';
     return (
       <LoginBack className="login-container">
+        <img src={require('../../assets/images/logo.png')} alt=""/>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <FormItem>
             {getFieldDecorator('userName', {

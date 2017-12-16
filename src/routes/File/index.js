@@ -29,7 +29,8 @@ class Home extends React.PureComponent {
   }
   initDataSource = (dataSource) => {
     let data = [];
-    const { id } = this.props.match.params;
+    console.log(this.props);
+    const { id } = this.props.computedMatch.params;
     switch (id) {
       case '1':
         data = [...dataSource.unwrite.data]; break;
@@ -117,7 +118,7 @@ class Home extends React.PureComponent {
       title: '状态',
       dataIndex: 'status',
       render: data => (
-        <span className={`status${this.props.match.params.id}`}>{data}</span>
+        <span className={`status${this.props.computedMatch.params.id}`}>{data}</span>
       ),
     }, {
       title: '操作',

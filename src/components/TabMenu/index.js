@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Link,NavLink } from 'dva/router';
 import { Icon, Badge } from 'antd';
 import './style.less';
@@ -31,25 +31,18 @@ export default function TabMenu({ unwrite_n, unconfirm_n, pathname, hide }) {
           功能
         </div>
       <ul className="submenu">
-        <li><Link to="/">信息查看</Link></li>
-        <li><Link to="/">信息添加</Link></li>
-        <li><Link to="/">我的收藏</Link></li>
+        <li><NavLink to="/test/1" activeClassName={'router-active'}>信息查看</NavLink></li>
+        <li><NavLink to="/test/2" activeClassName={'router-active'}>信息添加</NavLink></li>
+        <li><NavLink to="/test/3" activeClassName={'router-active'}>我的收藏</NavLink></li>
       </ul>
       <div className="tab-item">
         <Icon type="team" />
           群发管理
         </div>
       <ul className="submenu">
-        <li><Link to="/">新建群发</Link></li>
-        <li><Link to="/">审批管理</Link></li>
+        <li><NavLink to="/test/4" activeClassName={'router-active'}>新建群发</NavLink></li>
+        <li><NavLink to="/test/5" activeClassName={'router-active'}>审批管理</NavLink></li>
       </ul>
     </div>
   );
 }
-TabMenu.propTypes = {
-  unwrite_n: PropTypes.number,
-  unconfirm_n: PropTypes.number,
-  finished_n: PropTypes.number,
-  pathname: PropTypes.string,
-  hide: PropTypes.bool,
-};

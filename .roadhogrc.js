@@ -1,5 +1,11 @@
 export default {
-  entry : "src/index.js" ,
+  entry : {
+    app: "./src/index.js",
+    common: "./src/vendor.js"
+  },
+  hash: true,
+  multipage: true,
+  less: true,
   disableCSSModules : true ,
   publicPath : "/" ,
   theme : "./theme.config.js" ,

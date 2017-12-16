@@ -12,9 +12,11 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put, select }) {  // eslint-disable-line
+      yield put({ type: 'save', payload: { [payload.id]: null } });
       const { data, code, message } = yield call(fetchTableData2, { ...payload });
       if(code === 1){
         message.error(message);
+        yield put(routerRedux.goBack());
         return;
       }else if(code === 2){
         message.error('请重新登录！');
@@ -51,7 +53,7 @@ export default {
         return;
       }else if(code === 2){
         message.error('请重新登录！');
-        yield put(routerRedux.push('/'));
+        yield put(routerRedux.push('/login'));
         return;
       }
       message.success('提交成功！');
@@ -60,6 +62,7 @@ export default {
       }else{
         yield put({ type: 'save', payload: { [payload.id]: null } });
       }
+      yield put(routerRedux.push('/home'));
     },
   },
 
