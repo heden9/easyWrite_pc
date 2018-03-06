@@ -17,7 +17,6 @@ const app = dva({
   }),
   onError(e, dispatch) {
     console.log(e.message);
-    message.error('出错啦TnT');
   }
 });
 window.beforeunload = window.onunload = function () {
